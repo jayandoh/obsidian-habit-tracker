@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-habit-tracker",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "A simple and portable habit tracker for Obsidian",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
