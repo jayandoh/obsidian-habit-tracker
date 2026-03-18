@@ -4,7 +4,7 @@ export function addHabit(data: PluginData, name: string, color?: string): Habit 
 	const habit: Habit = {
 		id: crypto.randomUUID(),
 		name,
-		createdAt: new Date().toISOString().split('T')[0],
+		createdAt: new Date().toISOString().split('T')[0] ?? '',
 		...(color !== undefined ? { color } : {}),
 	};
 	data.habits.push(habit)
