@@ -2,6 +2,7 @@ import {Plugin} from 'obsidian';
 import {DEFAULT_SETTINGS, HabitTrackerPluginSettings, HabitTrackerSettingTab} from "./settings";
 import {PluginData} from "./types";
 import {HabitModal} from "./HabitModal";
+import {HabitTrackerView, VIEW_TYPE_HABIT_TRACKER} from "./HabitTrackerView";
 
 const DEFAULT_DATA: PluginData = {
 	habits: [],
@@ -14,6 +15,11 @@ export default class HabitTrackerPlugin extends Plugin {
 
 	async onload() {
 		await this.initData();
+
+		this.registerView(
+			VIEW_TYPE_HABIT_TRACKER,
+			(leaf) => new HabitTrackerView(leaf, this),
+		);
 
 		this.addRibbonIcon('check-square', 'Habit Tracker', () => {
 			this.activateView();
@@ -40,7 +46,13 @@ export default class HabitTrackerPlugin extends Plugin {
 	}
 
 	async activateView(): Promise<void> {
-		// TODO: register and activate HabitTrackerView
+		const {workspace} = this.app;
+		let leaf = workspace.getLeavesOfType(VIEW_TYPE_HABIT_TRACKER)[0];
+		if (!leaf) {
+			leaf = workspace.getRightLeaf(false) ?? workspace.getLeaf(true);
+			await leaf.setViewState({type: VIEW_TYPE_HABIT_TRACKER, active: true});
+		}
+		workspace.revealLeaf(leaf);
 	}
 
 	private async initData(): Promise<void> {

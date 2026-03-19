@@ -1,8 +1,98 @@
-/*
+/* ─── Header ─────────────────────────────────────────────────────────────── */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.habit-tracker-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
 
-If your plugin does not need CSS, delete this file.
+.habit-tracker-title {
+	font-weight: 600;
+	font-size: var(--font-ui-medium);
+}
 
-*/
+.habit-tracker-add-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 1.4em;
+	line-height: 1;
+	color: var(--text-muted);
+	padding: 0 4px;
+}
+
+.habit-tracker-add-btn:hover {
+	color: var(--text-normal);
+}
+
+/* ─── Table wrapper ──────────────────────────────────────────────────────── */
+
+.habit-tracker-table-wrapper {
+	overflow-x: auto;
+	padding: 8px 0;
+}
+
+/* ─── Table ──────────────────────────────────────────────────────────────── */
+
+.habit-tracker-table {
+	border-collapse: collapse;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.habit-tracker-table th,
+.habit-tracker-table td {
+	padding: 4px 8px;
+	text-align: center;
+	font-size: var(--font-ui-small);
+}
+
+/* ─── Habit name column ──────────────────────────────────────────────────── */
+
+.habit-tracker-name-col,
+.habit-tracker-name {
+	text-align: left;
+	min-width: 100px;
+	font-weight: 500;
+}
+
+/* ─── Date columns ───────────────────────────────────────────────────────── */
+
+.habit-tracker-date-col {
+	min-width: 36px;
+	color: var(--text-muted);
+}
+
+/* ─── Today highlight ────────────────────────────────────────────────────── */
+
+th.habit-tracker-today {
+	color: var(--color-accent);
+	font-weight: 700;
+}
+
+td.habit-tracker-today {
+	background-color: var(--background-modifier-hover);
+}
+
+/* ─── Cells ──────────────────────────────────────────────────────────────── */
+
+.habit-tracker-cell {
+	cursor: default;
+	border-radius: 4px;
+}
+
+.habit-tracker-cell--completed {
+	color: var(--color-green);
+	font-weight: 600;
+}
+
+/* ─── Empty state ────────────────────────────────────────────────────────── */
+
+.habit-tracker-empty {
+	text-align: center;
+	color: var(--text-muted);
+	padding: 24px 0;
+	font-style: italic;
+}
