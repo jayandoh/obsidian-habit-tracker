@@ -4,10 +4,12 @@ import type HabitTrackerPlugin from "./main";
 
 export class HabitModal extends Modal {
 	private readonly plugin: HabitTrackerPlugin;
+	private readonly onSave?: () => void;
 
-	constructor(app: App, plugin: HabitTrackerPlugin) {
+	constructor(app: App, plugin: HabitTrackerPlugin, onSave?: () => void) {
 		super(app);
 		this.plugin = plugin;
+		this.onSave = onSave;
 	}
 
 	onOpen(): void {
@@ -21,7 +23,7 @@ export class HabitModal extends Modal {
 		new Setting(contentEl)
 			.setName("Habit name")
 			.addText((text) => {
-				text.setPlaceholder("Exercise");
+				text.setPlaceholder("Read");
 				text.onChange((value) => {
 					name = value.trim();
 				});
@@ -30,7 +32,7 @@ export class HabitModal extends Modal {
 		new Setting(contentEl)
 			.setName("Color (optional)")
 			.addText((text) => {
-				text.setPlaceholder("#22c55e");
+				text.setPlaceholder("#ffd000");
 				text.onChange((value) => {
 					color = value.trim();
 				});
@@ -46,6 +48,7 @@ export class HabitModal extends Modal {
 
 					addHabit(this.plugin.data, name, color || undefined);
 					await this.plugin.savePluginData();
+					this.onSave?.();
 					this.close();
 				});
 			})

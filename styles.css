@@ -79,8 +79,12 @@ td.habit-tracker-today {
 /* ─── Cells ──────────────────────────────────────────────────────────────── */
 
 .habit-tracker-cell {
-	cursor: default;
+	cursor: pointer;
 	border-radius: 4px;
+}
+
+.habit-tracker-cell:hover {
+	background-color: var(--background-modifier-hover);
 }
 
 .habit-tracker-cell--completed {

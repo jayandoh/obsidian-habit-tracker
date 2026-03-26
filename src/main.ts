@@ -35,7 +35,7 @@ export default class HabitTrackerPlugin extends Plugin {
 			id: 'add-habit',
 			name: 'Add habit',
 			callback: () => {
-				new HabitModal(this.app, this).open();
+				new HabitModal(this.app, this, () => this.getTrackerView()?.render()).open();
 			},
 		});
 
@@ -43,6 +43,11 @@ export default class HabitTrackerPlugin extends Plugin {
 	}
 
 	onunload() {
+	}
+
+	private getTrackerView(): HabitTrackerView | undefined {
+		const leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_HABIT_TRACKER)[0];
+		return leaf?.view instanceof HabitTrackerView ? leaf.view : undefined;
 	}
 
 	async activateView(): Promise<void> {

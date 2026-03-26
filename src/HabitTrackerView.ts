@@ -1,6 +1,8 @@
 import {ItemView, WorkspaceLeaf} from 'obsidian';
 import HabitTrackerPlugin from './main';
 import {Habit} from './types';
+import {toggleHabitDate} from './database';
+import {HabitModal} from './HabitModal';
 
 export const VIEW_TYPE_HABIT_TRACKER = 'habit-tracker-view';
 
@@ -46,8 +48,10 @@ export class HabitTrackerView extends ItemView {
 		// Header row with title and add button
 		const header = this.contentEl.createDiv({cls: 'habit-tracker-header'});
 		header.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
-		header.createEl('button', {text: '+', cls: 'habit-tracker-add-btn'});
-		// TODO: wire add button to HabitModal in Phase 3
+		const addBtn = header.createEl('button', {text: '+', cls: 'habit-tracker-add-btn'});
+		addBtn.addEventListener('click', () => {
+			new HabitModal(this.plugin.app, this.plugin, () => this.render()).open();
+		});
 
 		// Generate the rolling date window
 		const dates = this.generateDates();
@@ -104,7 +108,11 @@ export class HabitTrackerView extends ItemView {
 			if (this.isToday(date)) {
 				cell.addClass('habit-tracker-today');
 			}
-			// TODO: add click handler to toggle completion in Phase 3
+			cell.addEventListener('click', async () => {
+				toggleHabitDate(this.plugin.data, habit.id, date);
+				await this.plugin.savePluginData();
+				this.render();
+			});
 		}
 	}
 
