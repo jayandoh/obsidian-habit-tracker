@@ -116,12 +116,12 @@ export class HabitTrackerView extends ItemView {
 		}
 	}
 
-	// Returns an array of date strings from (today - windowSize) up to today
+	// Returns an array of date strings from today back to (today - windowSize), newest first
 	private generateDates(): string[] {
 		const dates: string[] = [];
 		const today = new Date();
 		const windowSize = this.plugin.settings.dateWindowSize;
-		for (let i = windowSize - 1; i >= 0; i--) {
+		for (let i = 0; i < windowSize; i++) {
 			const date = new Date(today);
 			date.setDate(today.getDate() - i);
 			dates.push(this.toDateString(date));
