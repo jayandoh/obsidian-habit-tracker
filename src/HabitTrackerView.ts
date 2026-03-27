@@ -3,6 +3,7 @@ import HabitTrackerPlugin from './main';
 import {Habit} from './types';
 import {toggleHabitDate, getStreak} from './database';
 import {HabitModal} from './HabitModal';
+import {toLocalDateString} from './utils';
 
 export const VIEW_TYPE_HABIT_TRACKER = 'habit-tracker-view';
 
@@ -43,6 +44,8 @@ export class HabitTrackerView extends ItemView {
 	}
 
 	render(): void {
+		// Preserve horizontal scroll position across re-renders
+		const scrollLeft = this.contentEl.querySelector('.habit-tracker-table-wrapper')?.scrollLeft ?? 0;
 		this.contentEl.empty();
 
 		// Header row with title and add button
@@ -92,6 +95,9 @@ export class HabitTrackerView extends ItemView {
 				this.renderHabitRow(tbody, habit, dates);
 			}
 		}
+
+		// Restore scroll position after table is fully generated
+		wrapper.scrollLeft = scrollLeft;
 	}
 
 	private renderHabitRow(tbody: HTMLElement, habit: Habit, dates: string[]): void {
@@ -146,7 +152,7 @@ export class HabitTrackerView extends ItemView {
 	}
 
 	private toDateString(date: Date): string {
-		return date.toISOString().split('T')[0] ?? '';
+		return toLocalDateString(date);
 	}
 
 	private isToday(dateStr: string): boolean {

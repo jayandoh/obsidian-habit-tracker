@@ -5,7 +5,7 @@ export function addHabit(data: PluginData, name: string, color?: string): Habit 
 	const habit: Habit = {
 		id: crypto.randomUUID(),
 		name,
-		createdAt: new Date().toISOString().split('T')[0] ?? '',
+		createdAt: toLocalDateString(new Date()),
 		...(color !== undefined ? { color } : {}),
 	};
 	data.habits.push(habit)
@@ -46,7 +46,7 @@ export function getCompletedDates(data: PluginData, id: string): string[] {
 export function getStreak(data: PluginData, id: string): number {
 	const completed = new Set(data.logs[id] ?? []);
 	const today = new Date();
-	const toDateString = (d: Date) => d.toISOString().split('T')[0] ?? '';
+	const toDateString = (d: Date) => toLocalDateString(d);
 
 	// If today is not completed, start counting from yesterday so the
 	// streak remains active until the end of the day
