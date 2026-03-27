@@ -1,7 +1,7 @@
 import {ItemView, WorkspaceLeaf} from 'obsidian';
 import HabitTrackerPlugin from './main';
 import {Habit} from './types';
-import {toggleHabitDate} from './database';
+import {toggleHabitDate, getStreak} from './database';
 import {HabitModal} from './HabitModal';
 
 export const VIEW_TYPE_HABIT_TRACKER = 'habit-tracker-view';
@@ -96,7 +96,15 @@ export class HabitTrackerView extends ItemView {
 
 	private renderHabitRow(tbody: HTMLElement, habit: Habit, dates: string[]): void {
 		const row = tbody.createEl('tr', {cls: 'habit-tracker-row'});
-		row.createEl('td', {text: habit.name, cls: 'habit-tracker-name'});
+		const nameCell = row.createEl('td', {cls: 'habit-tracker-name'});
+		nameCell.createEl('span', {text: habit.name});
+		const streak = getStreak(this.plugin.data, habit.id);
+		if (streak > 0) {
+			nameCell.createEl('span', {
+				text: String(streak),
+				cls: 'habit-tracker-streak',
+			});
+		}
 
 		const completedDates = this.plugin.data.logs[habit.id] ?? [];
 		for (const date of dates) {

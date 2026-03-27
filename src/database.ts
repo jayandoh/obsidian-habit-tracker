@@ -1,4 +1,5 @@
 import {Habit, PluginData} from "./types"
+import {toLocalDateString} from "./utils"
 
 export function addHabit(data: PluginData, name: string, color?: string): Habit {
 	const habit: Habit = {
@@ -40,4 +41,27 @@ export function getCompletedDates(data: PluginData, id: string): string[] {
 		return [];
 	}
     return data.logs[id];
+}
+
+export function getStreak(data: PluginData, id: string): number {
+	const completed = new Set(data.logs[id] ?? []);
+	const today = new Date();
+	const toDateString = (d: Date) => d.toISOString().split('T')[0] ?? '';
+
+	// If today is not completed, start counting from yesterday so the
+	// streak remains active until the end of the day
+	const todayStr = toDateString(today);
+	const startOffset = completed.has(todayStr) ? 0 : 1;
+
+	let streak = 0;
+	for (let i = startOffset; i < 365; i++) {
+		const date = new Date(today);
+		date.setDate(today.getDate() - i);
+		if (completed.has(toDateString(date))) {
+			streak++;
+		} else {
+			break;
+		}
+	}
+	return streak;
 }

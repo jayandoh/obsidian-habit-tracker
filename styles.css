@@ -92,6 +92,15 @@ td.habit-tracker-today {
 	font-weight: 600;
 }
 
+/* ─── Streak badge ───────────────────────────────────────────────────────── */
+
+.habit-tracker-streak {
+	margin-left: 6px;
+	font-size: 0.75em;
+	font-weight: 600;
+	color: var(--color-orange);
+}
+
 /* ─── Empty state ────────────────────────────────────────────────────────── */
 
 .habit-tracker-empty {
