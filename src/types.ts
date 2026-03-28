@@ -6,7 +6,6 @@ export interface Habit {
     id: string;         // UUID
     name: string;
     createdAt: string;  // ISO date
-    color?: string;
     archived?: boolean;
 }
 

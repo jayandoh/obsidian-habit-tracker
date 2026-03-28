@@ -22,7 +22,6 @@ export class HabitModal extends Modal {
 		contentEl.createEl("h2", {text: isEditing ? "Edit habit" : "Add habit"});
 
 		let name = this.habit?.name ?? "";
-		let color = this.habit?.color ?? "";
 		let archived = this.habit?.archived ?? false;
 
 		new Setting(contentEl)
@@ -32,16 +31,6 @@ export class HabitModal extends Modal {
 				text.setValue(name);
 				text.onChange((value) => {
 					name = value.trim();
-				});
-			});
-
-		new Setting(contentEl)
-			.setName("Color (optional)")
-			.addText((text) => {
-				text.setPlaceholder("#ffd000");
-				text.setValue(color);
-				text.onChange((value) => {
-					color = value.trim();
 				});
 			});
 
@@ -68,11 +57,10 @@ export class HabitModal extends Modal {
 					if (isEditing && this.habit) {
 						updateHabit(this.plugin.data, this.habit.id, {
 							name,
-							color: color || undefined,
 							archived,
 						});
 					} else {
-						addHabit(this.plugin.data, name, color || undefined);
+						addHabit(this.plugin.data, name);
 					}
 
 					await this.plugin.savePluginData();

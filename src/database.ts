@@ -1,19 +1,18 @@
 import {Habit, PluginData} from "./types"
 import {toLocalDateString} from "./utils"
 
-export function addHabit(data: PluginData, name: string, color?: string): Habit {
+export function addHabit(data: PluginData, name: string): Habit {
 	const habit: Habit = {
 		id: crypto.randomUUID(),
 		name,
 		createdAt: toLocalDateString(new Date()),
-		...(color !== undefined ? { color } : {}),
 	};
 	data.habits.push(habit)
 	data.logs[habit.id] = [];
 	return habit;
 }
 
-export function updateHabit(data: PluginData, id: string, updates: Partial<Pick<Habit, 'name' | 'color' | 'archived'>>): void {
+export function updateHabit(data: PluginData, id: string, updates: Partial<Pick<Habit, 'name' | 'archived'>>): void {
 	const habit = data.habits.find(h => h.id === id);
 	if (habit) {
 		Object.assign(habit, updates);
