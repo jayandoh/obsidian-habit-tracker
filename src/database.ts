@@ -13,6 +13,13 @@ export function addHabit(data: PluginData, name: string, color?: string): Habit 
 	return habit;
 }
 
+export function updateHabit(data: PluginData, id: string, updates: Partial<Pick<Habit, 'name' | 'color' | 'archived'>>): void {
+	const habit = data.habits.find(h => h.id === id);
+	if (habit) {
+		Object.assign(habit, updates);
+	}
+}
+
 export function deleteHabit(data: PluginData, id: string): void {
     // Replace Habits array with a new array without the deleted habit
 	data.habits = data.habits.filter(h => h.id !== id);

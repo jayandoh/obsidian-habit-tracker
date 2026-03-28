@@ -58,6 +58,16 @@
 	font-weight: 500;
 }
 
+/* ─── Habit name (clickable to edit) ────────────────────────────────────── */
+
+.habit-tracker-name-text {
+	cursor: pointer;
+}
+
+.habit-tracker-name-text:hover {
+	text-decoration: underline;
+}
+
 /* ─── Date columns ───────────────────────────────────────────────────────── */
 
 .habit-tracker-date-col {

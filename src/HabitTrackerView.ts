@@ -103,7 +103,10 @@ export class HabitTrackerView extends ItemView {
 	private renderHabitRow(tbody: HTMLElement, habit: Habit, dates: string[]): void {
 		const row = tbody.createEl('tr', {cls: 'habit-tracker-row'});
 		const nameCell = row.createEl('td', {cls: 'habit-tracker-name'});
-		nameCell.createEl('span', {text: habit.name});
+		const nameSpan = nameCell.createEl('span', {text: habit.name, cls: 'habit-tracker-name-text'});
+		nameSpan.addEventListener('click', () => {
+			new HabitModal(this.plugin.app, this.plugin, () => this.render(), habit).open();
+		});
 		const streak = getStreak(this.plugin.data, habit.id);
 		if (streak > 0) {
 			nameCell.createEl('span', {
