@@ -1,5 +1,5 @@
 import {App, Modal, Notice, Setting} from "obsidian";
-import {addHabit, updateHabit} from "./database";
+import {addHabit, updateHabit, deleteHabit} from "./database";
 import type HabitTrackerPlugin from "./main";
 import type {Habit} from "./types";
 
@@ -77,6 +77,57 @@ export class HabitModal extends Modal {
 
 					await this.plugin.savePluginData();
 					this.onSave?.();
+					this.close();
+				});
+			})
+			.addButton((button) => {
+				button.setButtonText("Cancel").onClick(() => this.close());
+			});
+
+		if (isEditing && this.habit) {
+			const habit = this.habit;
+			new Setting(contentEl)
+				.addButton((button) => {
+					button.setButtonText("Delete habit").setWarning().onClick(() => {
+						new ConfirmModal(
+							this.app,
+							`Delete "${habit.name}"? This will permanently remove the habit and all its logs.`,
+							async () => {
+								deleteHabit(this.plugin.data, habit.id);
+								await this.plugin.savePluginData();
+								this.onSave?.();
+								this.close();
+							},
+						).open();
+					});
+				});
+		}
+	}
+
+	onClose(): void {
+		this.contentEl.empty();
+	}
+}
+
+class ConfirmModal extends Modal {
+	private readonly message: string;
+	private readonly onConfirm: () => void;
+
+	constructor(app: App, message: string, onConfirm: () => void) {
+		super(app);
+		this.message = message;
+		this.onConfirm = onConfirm;
+	}
+
+	onOpen(): void {
+		const {contentEl} = this;
+		contentEl.empty();
+		contentEl.createEl("p", {text: this.message});
+
+		new Setting(contentEl)
+			.addButton((button) => {
+				button.setButtonText("Delete").setWarning().onClick(() => {
+					this.onConfirm();
 					this.close();
 				});
 			})
