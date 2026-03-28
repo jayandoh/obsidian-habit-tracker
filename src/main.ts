@@ -73,6 +73,11 @@ export default class HabitTrackerPlugin extends Plugin {
 	// Called by HabitTrackerSettingTab after settings changes
 	async saveSettings(): Promise<void> {
 		await this.persist();
+		this.refreshView();
+	}
+
+	refreshView(): void {
+		this.getTrackerView()?.render();
 	}
 
 	// Called after data mutations (add/delete/toggle habit)
