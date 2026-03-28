@@ -3,14 +3,12 @@ import HabitTrackerPlugin from "./main";
 
 export interface HabitTrackerPluginSettings {
 	dateWindowSize: number;   // Number of days to show as columns
-	firstDayOfWeek: number;   // 0 = Sunday, 1 = Monday
 	dateFormat: string;       // Format for column headers (e.g. M/D)
 	showArchived: boolean;    // Whether to show archived habits
 }
 
 export const DEFAULT_SETTINGS: HabitTrackerPluginSettings = {
 	dateWindowSize: 30,
-	firstDayOfWeek: 1,
 	dateFormat: 'M/D',
 	showArchived: false,
 }
@@ -40,18 +38,6 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 						this.plugin.settings.dateWindowSize = parsed;
 						await this.plugin.saveSettings();
 					}
-				}));
-
-		new Setting(containerEl)
-			.setName('First day of week')
-			.setDesc('The day the week starts on in the date columns.')
-			.addDropdown(drop => drop
-				.addOption('0', 'Sunday')
-				.addOption('1', 'Monday')
-				.setValue(String(this.plugin.settings.firstDayOfWeek))
-				.onChange(async (value) => {
-					this.plugin.settings.firstDayOfWeek = parseInt(value);
-					await this.plugin.saveSettings();
 				}));
 
 		new Setting(containerEl)
