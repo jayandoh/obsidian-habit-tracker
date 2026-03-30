@@ -97,7 +97,7 @@ export class HabitModal extends Modal {
 	}
 }
 
-class ConfirmModal extends Modal {
+export class ConfirmModal extends Modal {
 	private readonly message: string;
 	private readonly onConfirm: () => void;
 

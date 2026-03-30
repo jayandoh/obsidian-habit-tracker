@@ -1,5 +1,9 @@
-import {App, PluginSettingTab, Setting} from "obsidian";
+import {App, Notice, PluginSettingTab, Setting} from "obsidian";
+import {exportData, validateImport} from "./ImportExportService";
+import {ImportModal} from "./ImportModal";
 import HabitTrackerPlugin from "./main";
+
+const FIVE_MEGABYTES = 5242880;
 
 export interface HabitTrackerPluginSettings {
 	dateWindowSize: number;   // Number of days to show as columns
@@ -60,5 +64,60 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 					this.plugin.settings.showArchived = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+			.setName('Export data')
+			.setDesc('Download all habits and logs as a JSON file.')
+			.addButton(btn =>
+				btn.setButtonText('Export data').onClick(() => {
+					try {
+						const json = exportData(this.plugin.data);
+						const date = new Date().toISOString().slice(0, 10);
+						const blob = new Blob([json], {type: 'application/json'});
+						const url = URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = `habit-tracker-${date}.json`;
+						a.click();
+						URL.revokeObjectURL(url);
+					} catch {
+						new Notice('Export failed.');
+					}
+				}),
+			);
+
+		new Setting(containerEl)
+			.setName('Import data')
+			.setDesc('Import habits and logs from a previously exported JSON file.')
+			.addButton(btn =>
+				btn.setButtonText('Import data').onClick(() => {
+					const input = document.createElement('input');
+					input.type = 'file';
+					input.accept = '.json';
+					input.onchange = () => {
+						const file = input.files?.[0];
+						if (!file) return;
+
+						if (file.size > FIVE_MEGABYTES) {
+							new Notice('Import failed: file is too large.');
+							return;
+						}
+
+						const reader = new FileReader();
+						reader.onerror = () => new Notice('Import failed: could not read file.');
+						reader.onload = () => {
+							const text = reader.result as string;
+							const result = validateImport(text);
+							if ('error' in result) {
+								new Notice(result.error);
+								return;
+							}
+							new ImportModal(this.plugin, result.data).open();
+						};
+						reader.readAsText(file);
+					};
+					input.click();
+				}),
+			);
 	}
 }
