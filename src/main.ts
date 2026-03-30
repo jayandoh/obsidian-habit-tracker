@@ -3,6 +3,7 @@ import {DEFAULT_SETTINGS, HabitTrackerPluginSettings, HabitTrackerSettingTab} fr
 import {PluginData} from "./types";
 import {HabitModal} from "./HabitModal";
 import {HabitTrackerView, VIEW_TYPE_HABIT_TRACKER} from "./HabitTrackerView";
+import {renderHabitTable} from "./renderHabitTable";
 import {toLocalDateString} from "./utils";
 
 const ONE_SECOND_IN_MILLISECONDS = 1000;
@@ -44,6 +45,20 @@ export default class HabitTrackerPlugin extends Plugin {
 		});
 
 		this.addSettingTab(new HabitTrackerSettingTab(this.app, this));
+
+		this.registerMarkdownCodeBlockProcessor('habit-tracker', (_source, el, _ctx) => {
+			const render = () => {
+				const scrollLeft = el.querySelector('.habit-tracker-table-wrapper')?.scrollLeft ?? 0;
+				el.empty();
+				renderHabitTable(el, this, () => {
+					this.getTrackerView()?.render();
+					render();
+				});
+				const wrapper = el.querySelector('.habit-tracker-table-wrapper');
+				if (wrapper) wrapper.scrollLeft = scrollLeft;
+			};
+			render();
+		});
 
 		// Check every minute if the we rolled over to the next day and update if necessary
 		this.registerInterval(window.setInterval(
