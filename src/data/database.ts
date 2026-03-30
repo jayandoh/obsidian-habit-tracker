@@ -1,5 +1,5 @@
-import {Habit, PluginData} from "./types"
-import {toLocalDateString} from "./utils"
+import {Habit, PluginData} from "../types"
+import {toLocalDateString} from "../utils"
 
 export function addHabit(data: PluginData, name: string): Habit {
 	const habit: Habit = {

@@ -1,5 +1,5 @@
-import type {Habit, PluginData} from "./types";
-import {toLocalDateString} from "./utils";
+import type {Habit, PluginData} from "../types";
+import {toLocalDateString} from "../utils";
 
 /*
  * Serializes plugin data to a formatted JSON string.
@@ -14,7 +14,7 @@ export function exportData(data: PluginData): string {
 }
 
 /*
- * Runs validation checks on imported file. 
+ * Runs validation checks on imported file.
  */
 export function validateImport(rawText: string): {data: PluginData} | {error: string} {
 	// Check if import is empty
@@ -75,7 +75,7 @@ export function validateImport(rawText: string): {data: PluginData} | {error: st
 
 		// If habit name has been seen, mark its ID as dropped. Otherwise, add it to set of seen names
 		if (seenNames.has(key)) {
-			droppedIds.add(h.id as string); 
+			droppedIds.add(h.id as string);
 			continue;
 		}
 		seenNames.add(key);

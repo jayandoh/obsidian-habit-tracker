@@ -1,7 +1,7 @@
 import {Modal, Notice, Setting} from "obsidian";
-import type HabitTrackerPlugin from "./main";
-import type {PluginData} from "./types";
-import {detectDuplicates, mergeImport} from "./ImportExportService";
+import type HabitTrackerPlugin from "../main";
+import type {PluginData} from "../types";
+import {detectDuplicates, mergeImport} from "../data/importExport";
 import {ConfirmModal} from "./HabitModal";
 
 export class ImportModal extends Modal {

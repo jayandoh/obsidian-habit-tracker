@@ -1,7 +1,7 @@
 import {App, Notice, PluginSettingTab, Setting} from "obsidian";
-import {exportData, validateImport} from "./ImportExportService";
+import {exportData, validateImport} from "../data/importExport";
 import {ImportModal} from "./ImportModal";
-import HabitTrackerPlugin from "./main";
+import HabitTrackerPlugin from "../main";
 
 const FIVE_MEGABYTES = 5242880;
 

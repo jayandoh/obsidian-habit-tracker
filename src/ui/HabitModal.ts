@@ -1,7 +1,7 @@
 import {App, Modal, Notice, Setting} from "obsidian";
-import {addHabit, updateHabit, deleteHabit} from "./database";
-import type HabitTrackerPlugin from "./main";
-import type {Habit} from "./types";
+import {addHabit, updateHabit, deleteHabit} from "../data/database";
+import type HabitTrackerPlugin from "../main";
+import type {Habit} from "../types";
 
 export class HabitModal extends Modal {
 	private readonly plugin: HabitTrackerPlugin;

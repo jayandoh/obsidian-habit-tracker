@@ -1,7 +1,7 @@
 import {ItemView, WorkspaceLeaf} from 'obsidian';
-import HabitTrackerPlugin from './main';
+import HabitTrackerPlugin from '../main';
 import {renderHabitTable} from './renderHabitTable';
-import {toLocalDateString} from './utils';
+import {toLocalDateString} from '../utils';
 
 export const VIEW_TYPE_HABIT_TRACKER = 'habit-tracker-view';
 

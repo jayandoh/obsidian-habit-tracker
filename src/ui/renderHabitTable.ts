@@ -1,8 +1,8 @@
-import type HabitTrackerPlugin from './main';
-import type {Habit} from './types';
-import {toggleHabitDate, getStreak} from './database';
+import type HabitTrackerPlugin from '../main';
+import type {Habit} from '../types';
+import {toggleHabitDate, getStreak} from '../data/database';
 import {HabitModal} from './HabitModal';
-import {toLocalDateString} from './utils';
+import {toLocalDateString} from '../utils';
 
 /*
  * Renders the full habit tracker UI (header + table) into `container`.

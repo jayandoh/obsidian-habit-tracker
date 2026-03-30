@@ -1,9 +1,9 @@
 import {Plugin} from 'obsidian';
-import {DEFAULT_SETTINGS, HabitTrackerPluginSettings, HabitTrackerSettingTab} from "./settings";
+import {DEFAULT_SETTINGS, HabitTrackerPluginSettings, HabitTrackerSettingTab} from "./ui/settings";
 import {PluginData} from "./types";
-import {HabitModal} from "./HabitModal";
-import {HabitTrackerView, VIEW_TYPE_HABIT_TRACKER} from "./HabitTrackerView";
-import {renderHabitTable} from "./renderHabitTable";
+import {HabitModal} from "./ui/HabitModal";
+import {HabitTrackerView, VIEW_TYPE_HABIT_TRACKER} from "./ui/HabitTrackerView";
+import {renderHabitTable} from "./ui/renderHabitTable";
 import {toLocalDateString} from "./utils";
 
 const ONE_SECOND_IN_MILLISECONDS = 1000;
