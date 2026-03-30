@@ -9,6 +9,7 @@ export const VIEW_TYPE_HABIT_TRACKER = 'habit-tracker-view';
 
 export class HabitTrackerView extends ItemView {
 	plugin: HabitTrackerPlugin;
+	lastRenderedDate: string = '';
 
 	constructor(leaf: WorkspaceLeaf, plugin: HabitTrackerPlugin) {
 		super(leaf);
@@ -44,6 +45,8 @@ export class HabitTrackerView extends ItemView {
 	}
 
 	render(): void {
+		this.lastRenderedDate = toLocalDateString(new Date()); // used to detect date rollover
+
 		// Preserve horizontal scroll position across re-renders
 		const scrollLeft = this.contentEl.querySelector('.habit-tracker-table-wrapper')?.scrollLeft ?? 0;
 		this.contentEl.empty();

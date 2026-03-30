@@ -3,6 +3,10 @@ import {DEFAULT_SETTINGS, HabitTrackerPluginSettings, HabitTrackerSettingTab} fr
 import {PluginData} from "./types";
 import {HabitModal} from "./HabitModal";
 import {HabitTrackerView, VIEW_TYPE_HABIT_TRACKER} from "./HabitTrackerView";
+import {toLocalDateString} from "./utils";
+
+const ONE_SECOND_IN_MILLISECONDS = 1000;
+const ONE_MINUTE_IN_SECONDS = 60;
 
 const DEFAULT_DATA: PluginData = {
 	habits: [],
@@ -40,6 +44,12 @@ export default class HabitTrackerPlugin extends Plugin {
 		});
 
 		this.addSettingTab(new HabitTrackerSettingTab(this.app, this));
+
+		// Check every minute if the we rolled over to the next day and update if necessary
+		this.registerInterval(window.setInterval(
+			() => this.checkDateRollover(),
+			ONE_MINUTE_IN_SECONDS * ONE_SECOND_IN_MILLISECONDS
+		));
 	}
 
 	onunload() {
@@ -78,6 +88,15 @@ export default class HabitTrackerPlugin extends Plugin {
 
 	refreshView(): void {
 		this.getTrackerView()?.render();
+	}
+
+	private checkDateRollover(): void {
+		const view = this.getTrackerView();
+		if (!view) return;
+		const today = toLocalDateString(new Date());
+		if (view.lastRenderedDate !== today) {
+			view.render();
+		}
 	}
 
 	// Called after data mutations (add/delete/toggle habit)
