@@ -20,7 +20,12 @@
 	font-size: 1.4em;
 	line-height: 1;
 	color: var(--text-muted);
-	padding: 0 4px;
+	padding: 0;
+	width: 1.4em;
+	height: 1.4em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .habit-tracker-add-btn:hover {
