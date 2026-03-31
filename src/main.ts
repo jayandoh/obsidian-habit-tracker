@@ -1,4 +1,4 @@
-import {Plugin} from 'obsidian';
+import {MarkdownRenderChild, Plugin} from 'obsidian';
 import {DEFAULT_SETTINGS, HabitTrackerPluginSettings, HabitTrackerSettingTab} from "./ui/settings";
 import {PluginData} from "./types";
 import {HabitModal} from "./ui/HabitModal";
@@ -17,6 +17,9 @@ const DEFAULT_DATA: PluginData = {
 export default class HabitTrackerPlugin extends Plugin {
 	settings: HabitTrackerPluginSettings;
 	data: PluginData;
+
+	// Render callbacks registered by active habit-tracker code blocks
+	private codeBlockRenderers = new Set<() => void>();
 
 	async onload() {
 		await this.initData();
@@ -40,27 +43,32 @@ export default class HabitTrackerPlugin extends Plugin {
 			id: 'add-habit',
 			name: 'Add habit',
 			callback: () => {
-				new HabitModal(this.app, this, () => this.getTrackerView()?.render()).open();
+				new HabitModal(this.app, this, () => this.refreshAll()).open();
 			},
 		});
 
 		this.addSettingTab(new HabitTrackerSettingTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor('habit-tracker', (_source, el, _ctx) => {
+		this.registerMarkdownCodeBlockProcessor('habit-tracker', (_source, el, ctx) => {
 			const render = () => {
 				const scrollLeft = el.querySelector('.habit-tracker-table-wrapper')?.scrollLeft ?? 0;
 				el.empty();
-				renderHabitTable(el, this, () => {
-					this.getTrackerView()?.render();
-					render();
-				});
+				renderHabitTable(el, this, () => this.refreshAll());
 				const wrapper = el.querySelector('.habit-tracker-table-wrapper');
 				if (wrapper) wrapper.scrollLeft = scrollLeft;
 			};
 			render();
+
+			// Register this code block's render function so refreshAll() can reach it
+			this.codeBlockRenderers.add(render);
+
+			// Unregister when the note containing this code block is closed
+			const child = new MarkdownRenderChild(el);
+			child.onunload = () => this.codeBlockRenderers.delete(render);
+			ctx.addChild(child);
 		});
 
-		// Check every minute if the we rolled over to the next day and update if necessary
+		// Check every minute if we rolled over to the next day and update if necessary
 		this.registerInterval(window.setInterval(
 			() => this.checkDateRollover(),
 			ONE_MINUTE_IN_SECONDS * ONE_SECOND_IN_MILLISECONDS
@@ -98,11 +106,23 @@ export default class HabitTrackerPlugin extends Plugin {
 	// Called by HabitTrackerSettingTab after settings changes
 	async saveSettings(): Promise<void> {
 		await this.persist();
-		this.refreshView();
+		this.refreshAll();
 	}
 
 	refreshView(): void {
 		this.getTrackerView()?.render();
+	}
+
+	private refreshCodeBlocks(): void {
+		for (const render of this.codeBlockRenderers) {
+			render();
+		}
+	}
+
+	// Refreshes the sidebar view and all active code blocks
+	refreshAll(): void {
+		this.refreshView();
+		this.refreshCodeBlocks();
 	}
 
 	private checkDateRollover(): void {
@@ -110,7 +130,7 @@ export default class HabitTrackerPlugin extends Plugin {
 		if (!view) return;
 		const today = toLocalDateString(new Date());
 		if (view.lastRenderedDate !== today) {
-			view.render();
+			this.refreshAll();
 		}
 	}
 

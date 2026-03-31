@@ -49,7 +49,7 @@ export class HabitTrackerView extends ItemView {
 		const scrollLeft = this.contentEl.querySelector('.habit-tracker-table-wrapper')?.scrollLeft ?? 0;
 		this.contentEl.empty();
 
-		renderHabitTable(this.contentEl, this.plugin, () => this.render());
+		renderHabitTable(this.contentEl, this.plugin, () => this.plugin.refreshAll());
 
 		// Restore scroll position after table is fully generated
 		const wrapper = this.contentEl.querySelector('.habit-tracker-table-wrapper');
