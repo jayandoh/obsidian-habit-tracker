@@ -21,6 +21,9 @@ export default class HabitTrackerPlugin extends Plugin {
 	// Render callbacks registered by active habit-tracker code blocks
 	private codeBlockRenderers = new Set<() => void>();
 
+	/*
+	 * Lifecycle functions
+	 */
 	async onload() {
 		await this.initData();
 
@@ -78,11 +81,9 @@ export default class HabitTrackerPlugin extends Plugin {
 	onunload() {
 	}
 
-	private getTrackerView(): HabitTrackerView | undefined {
-		const leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_HABIT_TRACKER)[0];
-		return leaf?.view instanceof HabitTrackerView ? leaf.view : undefined;
-	}
-
+	/*
+	 * Public API functions
+	 */
 	async activateView(): Promise<void> {
 		const {workspace} = this.app;
 		let leaf = workspace.getLeavesOfType(VIEW_TYPE_HABIT_TRACKER)[0];
@@ -93,6 +94,30 @@ export default class HabitTrackerPlugin extends Plugin {
 		workspace.revealLeaf(leaf);
 	}
 
+	// Called by HabitTrackerSettingTab after settings changes
+	async saveSettings(): Promise<void> {
+		await this.persist();
+		this.refreshAll();
+	}
+
+	// Called after data mutations (add/delete/toggle habit)
+	async savePluginData(): Promise<void> {
+		await this.persist();
+	}
+
+	// Refreshes the sidebar view and all active code blocks
+	refreshAll(): void {
+		this.refreshView();
+		this.refreshCodeBlocks();
+	}
+
+	refreshView(): void {
+		this.getTrackerView()?.render();
+	}
+
+	/*
+	 * Private helper functions
+	 */
 	private async initData(): Promise<void> {
 		const saved = await this.loadData();
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, saved?.settings);
@@ -103,26 +128,15 @@ export default class HabitTrackerPlugin extends Plugin {
 		await this.saveData({ settings: this.settings, data: this.data });
 	}
 
-	// Called by HabitTrackerSettingTab after settings changes
-	async saveSettings(): Promise<void> {
-		await this.persist();
-		this.refreshAll();
-	}
-
-	refreshView(): void {
-		this.getTrackerView()?.render();
+	private getTrackerView(): HabitTrackerView | undefined {
+		const leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_HABIT_TRACKER)[0];
+		return leaf?.view instanceof HabitTrackerView ? leaf.view : undefined;
 	}
 
 	private refreshCodeBlocks(): void {
 		for (const render of this.codeBlockRenderers) {
 			render();
 		}
-	}
-
-	// Refreshes the sidebar view and all active code blocks
-	refreshAll(): void {
-		this.refreshView();
-		this.refreshCodeBlocks();
 	}
 
 	private checkDateRollover(): void {
@@ -132,10 +146,5 @@ export default class HabitTrackerPlugin extends Plugin {
 		if (view.lastRenderedDate !== today) {
 			this.refreshAll();
 		}
-	}
-
-	// Called after data mutations (add/delete/toggle habit)
-	async savePluginData(): Promise<void> {
-		await this.persist();
 	}
 }
