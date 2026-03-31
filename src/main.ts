@@ -32,14 +32,14 @@ export default class HabitTrackerPlugin extends Plugin {
 			(leaf) => new HabitTrackerView(leaf, this),
 		);
 
-		this.addRibbonIcon('check-square', 'Habit Tracker', () => {
-			this.activateView();
+		this.addRibbonIcon('check-square', 'Habit tracker', () => {
+			void this.activateView();
 		});
 
 		this.addCommand({
 			id: 'open-habit-tracker',
 			name: 'Open habit tracker',
-			callback: () => this.activateView(),
+			callback: () => void this.activateView(),
 		});
 
 		this.addCommand({
@@ -91,7 +91,7 @@ export default class HabitTrackerPlugin extends Plugin {
 			leaf = workspace.getRightLeaf(false) ?? workspace.getLeaf(true);
 			await leaf.setViewState({type: VIEW_TYPE_HABIT_TRACKER, active: true});
 		}
-		workspace.revealLeaf(leaf);
+		await workspace.revealLeaf(leaf);
 	}
 
 	// Called by HabitTrackerSettingTab after settings changes
@@ -119,7 +119,7 @@ export default class HabitTrackerPlugin extends Plugin {
 	 * Private helper functions
 	 */
 	private async initData(): Promise<void> {
-		const saved = await this.loadData();
+		const saved = await this.loadData() as {settings?: Partial<HabitTrackerPluginSettings>; data?: Partial<PluginData>} | null;
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, saved?.settings);
 		this.data = Object.assign({}, DEFAULT_DATA, saved?.data);
 	}

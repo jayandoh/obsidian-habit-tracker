@@ -87,9 +87,9 @@ function renderHabitRow(
 			text: isCompleted ? '✓' : '',
 		});
 		if (isToday(date)) cell.addClass('habit-tracker-today');
-		cell.addEventListener('click', async () => {
+		cell.addEventListener('click', () => {
 			toggleHabitDate(plugin.data, habit.id, date);
-			await plugin.savePluginData();
+			void plugin.savePluginData();
 			onAfterToggle();
 		});
 	}

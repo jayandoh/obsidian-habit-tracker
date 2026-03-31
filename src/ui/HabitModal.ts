@@ -99,9 +99,9 @@ export class HabitModal extends Modal {
 
 export class ConfirmModal extends Modal {
 	private readonly message: string;
-	private readonly onConfirm: () => void;
+	private readonly onConfirm: () => void | Promise<void>;
 
-	constructor(app: App, message: string, onConfirm: () => void) {
+	constructor(app: App, message: string, onConfirm: () => void | Promise<void>) {
 		super(app);
 		this.message = message;
 		this.onConfirm = onConfirm;
@@ -115,7 +115,7 @@ export class ConfirmModal extends Modal {
 		new Setting(contentEl)
 			.addButton((button) => {
 				button.setButtonText("Delete").setWarning().onClick(() => {
-					this.onConfirm();
+					void Promise.resolve(this.onConfirm());
 					this.close();
 				});
 			})

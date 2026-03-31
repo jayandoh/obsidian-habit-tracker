@@ -144,7 +144,6 @@ export function mergeImport(
 	strategy: "replace" | "mergelogs" | "ignore",
 ): PluginData {
 	const duplicateImportedIds = new Set(duplicates.map(d => d.imported.id));
-	const duplicateExistingIds = new Set(duplicates.map(d => d.existing.id));
 
 	// Start with a deep copy of current habits and logs
 	const habits: Habit[] = current.habits.map(h => ({...h}));

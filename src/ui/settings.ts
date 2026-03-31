@@ -48,6 +48,7 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 			.setName('Date format')
 			.setDesc('Format for date column headers (e.g. M/D).')
 			.addText(text => text
+				// eslint-disable-next-line obsidianmd/ui/sentence-case
 				.setPlaceholder('M/D')
 				.setValue(this.plugin.settings.dateFormat)
 				.onChange(async (value) => {

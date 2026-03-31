@@ -110,8 +110,8 @@ export class ImportModal extends Modal {
 
 		const merged = mergeImport(this.plugin.data, remapped, remappedDuplicates, strategy);
 		this.plugin.data = merged;
-		this.plugin.savePluginData().then(() => {
-			this.plugin.refreshView();
+		void this.plugin.savePluginData().then(() => {
+			this.plugin.refreshAll();
 			new Notice("Import complete.");
 		});
 	}
