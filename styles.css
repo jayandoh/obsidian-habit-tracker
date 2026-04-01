@@ -13,7 +13,14 @@
 	font-size: var(--font-ui-medium);
 }
 
-.habit-tracker-add-btn {
+.habit-tracker-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.habit-tracker-add-btn,
+.habit-tracker-reorder-btn {
 	background: none;
 	border: none;
 	cursor: pointer;
@@ -28,8 +35,49 @@
 	justify-content: center;
 }
 
-.habit-tracker-add-btn:hover {
+.habit-tracker-add-btn:hover,
+.habit-tracker-reorder-btn:hover {
 	color: var(--text-normal);
+}
+
+/* ─── Reorder modal ──────────────────────────────────────────────────────── */
+
+.habit-reorder-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 8px 0;
+}
+
+.habit-reorder-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.habit-reorder-move-btn {
+	background: none;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	padding: 2px 6px;
+	line-height: 1.4;
+}
+
+.habit-reorder-move-btn:hover:not(:disabled) {
+	color: var(--text-normal);
+	border-color: var(--text-muted);
+}
+
+.habit-reorder-move-btn:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
+
+.habit-reorder-name {
+	font-size: var(--font-ui-small);
 }
 
 /* ─── Table wrapper ──────────────────────────────────────────────────────── */

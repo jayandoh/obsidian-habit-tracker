@@ -2,6 +2,7 @@ import type HabitTrackerPlugin from '../main';
 import type {Habit} from '../types';
 import {toggleHabitDate, getStreak} from '../data/database';
 import {HabitModal} from './HabitModal';
+import {ReorderModal} from './ReorderModal';
 import {toLocalDateString} from '../utils';
 
 /*
@@ -13,10 +14,15 @@ export function renderHabitTable(
 	plugin: HabitTrackerPlugin,
 	onAfterToggle: () => void,
 ): void {
-	// Header row with title and add button
+	// Header row with title and action buttons
 	const header = container.createDiv({cls: 'habit-tracker-header'});
 	header.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
-	const addBtn = header.createEl('button', {text: '+', cls: 'habit-tracker-add-btn'});
+	const actions = header.createDiv({cls: 'habit-tracker-actions'});
+	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
+	reorderBtn.addEventListener('click', () => {
+		new ReorderModal(plugin.app, plugin, onAfterToggle).open();
+	});
+	const addBtn = actions.createEl('button', {text: '+', cls: 'habit-tracker-add-btn'});
 	addBtn.addEventListener('click', () => {
 		new HabitModal(plugin.app, plugin, onAfterToggle).open();
 	});
