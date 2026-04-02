@@ -23,7 +23,7 @@ export class HabitTrackerView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'habit tracker';
+		return 'Habit tracker';
 	}
 
 	getIcon(): string {
@@ -34,12 +34,14 @@ export class HabitTrackerView extends ItemView {
 	 * Lifecycle methods:
 	 * onOpen(), onClose()
 	 */
-	async onOpen(): Promise<void> {
+	onOpen(): Promise<void> {
 		this.render();
+		return Promise.resolve();
 	}
 
-	async onClose(): Promise<void> {
+	onClose(): Promise<void> {
 		this.contentEl.empty();
+		return Promise.resolve();
 	}
 
 	render(): void {

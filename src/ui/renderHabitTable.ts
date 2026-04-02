@@ -70,7 +70,7 @@ function renderActionBar(
 	plugin: HabitTrackerPlugin,
 	onAfterToggle: () => void,
 ): void {
-	container.createEl('span', {text: 'habit tracker', cls: 'habit-tracker-title'});
+	container.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
 	const actions = container.createDiv({cls: 'habit-tracker-actions'});
 	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
 	reorderBtn.addEventListener('click', () => {
