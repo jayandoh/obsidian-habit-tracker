@@ -23,7 +23,7 @@ export class HabitTrackerView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Habit tracker';
+		return 'habit tracker';
 	}
 
 	getIcon(): string {

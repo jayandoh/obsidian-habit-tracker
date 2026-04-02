@@ -6,26 +6,20 @@ import {ReorderModal} from './ReorderModal';
 import {toLocalDateString} from '../utils';
 
 /*
- * Renders the full habit tracker UI (header + table) into `container`.
+ * Renders the full habit tracker UI into `container`.
  * `onAfterToggle` is called after any data mutation so the caller can re-render.
+ * `isCodeBlock` switches to the embedded layout: no top header, action bar below the table.
  */
 export function renderHabitTable(
 	container: HTMLElement,
 	plugin: HabitTrackerPlugin,
 	onAfterToggle: () => void,
+	isCodeBlock = false,
 ): void {
-	// Header row with title and action buttons
-	const header = container.createDiv({cls: 'habit-tracker-header'});
-	header.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
-	const actions = header.createDiv({cls: 'habit-tracker-actions'});
-	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
-	reorderBtn.addEventListener('click', () => {
-		new ReorderModal(plugin.app, plugin, onAfterToggle).open();
-	});
-	const addBtn = actions.createEl('button', {text: '+', cls: 'habit-tracker-add-btn'});
-	addBtn.addEventListener('click', () => {
-		new HabitModal(plugin.app, plugin, onAfterToggle).open();
-	});
+	if (!isCodeBlock) {
+		// Sidebar view: action bar sits above the table
+		renderActionBar(container.createDiv({cls: 'habit-tracker-header'}), plugin, onAfterToggle);
+	}
 
 	// Generate the rolling date window
 	const dates = generateDates(plugin);
@@ -64,6 +58,28 @@ export function renderHabitTable(
 			renderHabitRow(tbody, habit, dates, plugin, onAfterToggle);
 		}
 	}
+
+	if (isCodeBlock) {
+		// Embedded view: action bar sits below the table
+		renderActionBar(container.createDiv({cls: 'habit-tracker-action-bar'}), plugin, onAfterToggle);
+	}
+}
+
+function renderActionBar(
+	container: HTMLElement,
+	plugin: HabitTrackerPlugin,
+	onAfterToggle: () => void,
+): void {
+	container.createEl('span', {text: 'habit tracker', cls: 'habit-tracker-title'});
+	const actions = container.createDiv({cls: 'habit-tracker-actions'});
+	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
+	reorderBtn.addEventListener('click', () => {
+		new ReorderModal(plugin.app, plugin, onAfterToggle).open();
+	});
+	const addBtn = actions.createEl('button', {text: '+', cls: 'habit-tracker-add-btn'});
+	addBtn.addEventListener('click', () => {
+		new HabitModal(plugin.app, plugin, onAfterToggle).open();
+	});
 }
 
 function renderHabitRow(

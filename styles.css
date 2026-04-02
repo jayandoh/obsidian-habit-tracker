@@ -25,11 +25,11 @@
 	border: none;
 	cursor: pointer;
 	font-size: 1.4em;
-	line-height: 1;
-	color: var(--text-muted);
-	padding: 0;
 	width: 1.4em;
 	height: 1.4em;
+	line-height: 1;
+	padding: 0;
+	color: var(--text-muted);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -172,3 +172,45 @@ td.habit-tracker-today {
 	padding: 24px 0;
 	font-style: italic;
 }
+
+/* ─── Code block host ────────────────────────────────────────────────────── */
+
+.cm-lang-habit-tracker {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.cm-preview-code-block.cm-embed-block.cm-lang-habit-tracker > .edit-block-button {
+	display: none !important;
+}
+
+/* ─── Code block action bar ──────────────────────────────────────────────── */
+
+.habit-tracker-action-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 4px 12px;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+/* Desktop: fade in on hover */
+.cm-lang-habit-tracker .habit-tracker-action-bar,
+.block-language-habit-tracker .habit-tracker-action-bar {
+	opacity: 0;
+	transition: opacity 0.15s;
+}
+
+.cm-lang-habit-tracker:hover .habit-tracker-action-bar,
+.block-language-habit-tracker:hover .habit-tracker-action-bar {
+	opacity: 1;
+}
+
+/* Mobile: always visible */
+@media (hover: none) {
+	.cm-lang-habit-tracker .habit-tracker-action-bar,
+	.block-language-habit-tracker .habit-tracker-action-bar {
+		opacity: 1;
+	}
+}
+

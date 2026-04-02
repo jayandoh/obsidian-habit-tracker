@@ -56,7 +56,7 @@ export default class HabitTrackerPlugin extends Plugin {
 			const render = () => {
 				const scrollLeft = el.querySelector('.habit-tracker-table-wrapper')?.scrollLeft ?? 0;
 				el.empty();
-				renderHabitTable(el, this, () => this.refreshAll());
+				renderHabitTable(el, this, () => this.refreshAll(), true);
 				const wrapper = el.querySelector('.habit-tracker-table-wrapper');
 				if (wrapper) wrapper.scrollLeft = scrollLeft;
 			};
