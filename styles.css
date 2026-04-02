@@ -206,8 +206,8 @@ td.habit-tracker-today {
 	opacity: 1;
 }
 
-/* Mobile: always visible */
-@media (hover: none) {
+/* Mobile: always visible — (hover: none) covers iOS, (pointer: coarse) covers Android */
+@media (hover: none), (pointer: coarse) {
 	.cm-lang-habit-tracker .habit-tracker-action-bar,
 	.block-language-habit-tracker .habit-tracker-action-bar {
 		opacity: 1;
