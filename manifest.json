@@ -1,9 +1,9 @@
 {
-	"id": "habit-tracker-plugin",
-	"name": "Obsidian Habit Tracker",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Just a simple and portable habit tracker for Obsidian.",
+	"id": "yacht-habit-tracker",
+	"name": "YACHT",
 	"author": "jayandoh",
+	"description": "Yet another chill habit tracker. Embed it in your notes or open it from the sidebar, and export your data!",
+	"version": "1.0.0",
+	"minAppVersion": "1.12.4",
 	"isDesktopOnly": false
 }
