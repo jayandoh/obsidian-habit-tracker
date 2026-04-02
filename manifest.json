@@ -3,7 +3,7 @@
 	"name": "YACHT",
 	"author": "jayandoh",
 	"description": "Yet another chill habit tracker. Embed it in your notes or open it from the sidebar, and export your data!",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "1.12.4",
 	"isDesktopOnly": false
 }
